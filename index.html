@@ -105,6 +105,9 @@
   .fairness img{width:100%;height:auto;display:block;mix-blend-mode:multiply}
   @media (max-width:640px){ .fairness{grid-template-columns:1fr} .fairness img{max-width:220px;margin:0 auto} }
   .demo .bar .credit.bump{transform:scale(1.15)}
+  .demo .bar .rec{flex:none;white-space:nowrap;font-family:var(--mono);font-size:10.5px;color:var(--red);margin-left:6px}
+  .demo .bar .rec::before{content:"●";margin-right:4px;animation:recblink 1.2s steps(2) infinite}
+  @keyframes recblink{50%{opacity:.25}}
   .demo .body{padding:16px;min-height:224px;position:relative;
     background-image:conic-gradient(rgba(55,53,47,.025) 25%,transparent 0 50%,rgba(55,53,47,.025) 0 75%,transparent 0);
     background-size:8px 8px}
@@ -255,19 +258,19 @@
       </div>
       <div class="step flip">
         <div class="demo" id="demo2" aria-label="Animated demo: writing a structured review">
-          <div class="bar"><i></i><i></i><i></i><span class="t">early-eyes · review · briefcase.app</span><span class="credit" data-f="credit">credits: 0</span></div>
+          <div class="bar"><i></i><i></i><i></i><span class="t">early-eyes · review · briefcase.app</span><span class="rec">rec 14:02</span><span class="credit" data-f="credit">credits: 0</span></div>
           <div class="body">
             <div class="row"><label>1 · five-second test — what does it do?</label><div class="in" data-f="a1"></div></div>
             <div class="row"><label>2 · would you pay?</label><div class="in" data-f="a2"></div></div>
             <span class="pxbtn" data-f="btn">Submit review</span>
-            <div class="toast" data-f="toast">✓ agent verified — +1 credit</div>
+            <div class="toast" data-f="toast">✓ session verified · 14 min — +1 credit</div>
             <svg class="cursor" data-f="cur" viewBox="0 0 18 18" shape-rendering="crispEdges" aria-hidden="true"><path d="M2 1 L2 13 L5 10 L7 15 L9 14 L7 9 L11 9 Z" fill="#37352f" stroke="#fff" stroke-width="1"/></svg>
           </div>
         </div>
         <div class="txt">
           <span class="n">Step 2</span>
           <h3>Review products in your industry</h3>
-          <p>Matched from <b>your category</b>. A structured template, about 15 minutes each. Reviews rated useful earn you credits.</p>
+          <p>Matched from <b>your category</b>. You use their product <b>inside Early Eyes</b> — session recorded, real clicks, real minutes — then fill the template. That verified usage is what earns the credit.</p>
         </div>
       </div>
       <div class="step">
@@ -308,7 +311,7 @@
       </div>
     </div>
     <div class="fairness">
-      <p><b>Play fair.</b> Every reviewer passes a captcha, sessions are recorded, and an agent checks each review — no bots, no AI filler. And a review only earns its credit when the founder receiving it <b>rates it useful</b>. Lazy feedback pays nothing.</p>
+      <p><b>Play fair.</b> Reviews happen <b>inside Early Eyes</b>: captcha first, then your session is recorded while you actually use the product — real clicks, real minutes. An agent checks every session, and a review only earns its credit when the founder receiving it <b>rates it useful</b>. Lazy feedback pays nothing.</p>
       <img src="assets/step-4.png" alt="Pixel-art agent verifying a review with a magnifying glass while the session records">
     </div>
   </section>
