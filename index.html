@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Early Eyes — founders trade real product feedback</title>
-<meta name="description" content="Review products in your industry, get structured feedback on yours. Founder-to-founder feedback that isn't 'congrats 🚀'. No product yet — validating.">
+<meta name="description" content="Review products in your industry, get structured feedback on yours. Founder-to-founder feedback that isn't 'congrats 🚀'. Join the waitlist.">
 <meta property="og:title" content="Early Eyes — founders trade real product feedback">
 <meta property="og:description" content="Review products in your industry; founders review yours. Structured template, not comments. Credits keep it fair.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -198,7 +198,7 @@
   <div class="wrap">
   <header class="top">
     <div class="mark">Early Eyes</div>
-    <div class="status">validating — no product yet</div>
+    <div class="status">early access — opening soon</div>
   </header>
 
   <div class="hero">
@@ -359,8 +359,8 @@
   </section>
 
   <section id="join">
-    <p class="eyebrow">The honest part</p>
-    <h2>There's no product yet. If 100 founders want this, I'll build it.</h2>
+    <p class="eyebrow">Join the waitlist</p>
+    <h2>Be one of the first 100 founders in the exchange.</h2>
     <div class="formcard">
       <form id="waitlist" novalidate>
         <div class="field">
@@ -392,13 +392,13 @@
       <div class="success" id="success">
         <span class="tickbig">✓</span>
         <h3>You're in.</h3>
-        <p>Watch your inbox — and if you want to help this exist, share the page.</p>
+        <p>Watch your inbox — and share it with a founder friend who needs real feedback.</p>
       </div>
     </div>
   </section>
 
   <footer>
-    <span>Built in public · validating since July 2026</span>
+    <span>Early Eyes — honest founder feedback</span>
     <span><a href="https://twitter.com/intent/tweet?text=founders%20trading%20structured%20product%20feedback%20%E2%80%94%20review%20products%20in%20your%20industry%2C%20get%20real%20feedback%20on%20yours%3A&url=https://earlyeyes.io" rel="noopener">Share on Twitter</a></span>
   </footer>
 </div>
@@ -508,10 +508,9 @@
     document.querySelectorAll(".demo").forEach(d => io.observe(d));
   })();
 
-  // ONE setup step: create a free form at https://formspree.io, then replace
-  // YOUR_FORM_ID below. Until then, submissions fall back to a pre-filled
-  // email draft so no signup is lost.
-  const FORM_ENDPOINT = "https://formspree.io/f/YOUR_FORM_ID";
+  // Signups deliver by email via formsubmit.co (no backend). If the service
+  // is unreachable, fall back to a pre-filled email draft so no signup is lost.
+  const FORM_ENDPOINT = "https://formsubmit.co/ajax/jamakzai12@gmail.com";
   const FALLBACK_EMAIL = "jamakzai12@gmail.com";
 
   const form = document.getElementById("waitlist");
@@ -519,18 +518,18 @@
     e.preventDefault();
     if (!form.reportValidity()) return;
     const data = Object.fromEntries(new FormData(form).entries());
+    data._subject = "Early Eyes waitlist signup";
+    data._template = "table";
+    data._captcha = "false";
     const done = () => { form.style.display = "none"; document.getElementById("success").style.display = "block"; };
-    if (FORM_ENDPOINT.includes("YOUR_FORM_ID")) {
-      const body = encodeURIComponent(`email: ${data.email}\nbuilding: ${data.building || "-"}\ncategory: ${data.category}\nreciprocity: ${data.reciprocity}`);
-      window.location.href = `mailto:${FALLBACK_EMAIL}?subject=early%20eyes%20waitlist&body=${body}`;
-      done(); return;
-    }
     try {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(data) });
       if (!res.ok) throw new Error("form endpoint rejected");
       done();
     } catch {
-      alert("Couldn't reach the signup service — please try again, or DM me on Twitter.");
+      const body = encodeURIComponent(`email: ${data.email}\nbuilding: ${data.building || "-"}\ncategory: ${data.category}\nreciprocity: ${data.reciprocity}`);
+      window.location.href = `mailto:${FALLBACK_EMAIL}?subject=early%20eyes%20waitlist&body=${body}`;
+      done();
     }
   });
 </script>
