@@ -7,6 +7,10 @@
 <meta name="description" content="Review products in your industry, get structured feedback on yours. Founder-to-founder feedback that isn't 'congrats 🚀'. Join the waitlist.">
 <meta property="og:title" content="Early Eyes — founders trade real product feedback">
 <meta property="og:description" content="Review products in your industry; founders review yours. Structured template, not comments. Credits keep it fair.">
+<script>
+!function(e,t,n,s,u,a){e.twq||(s=e.twq=function(){s.exe?s.exe.apply(s,arguments):s.queue.push(arguments);},s.version='1.1',s.queue=[],u=t.createElement(n),u.async=!0,u.src='https://static.ads-twitter.com/uwt.js',a=t.getElementsByTagName(n)[0],a.parentNode.insertBefore(u,a))}(window,document,'script');
+twq('config','rd97w');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -517,6 +521,7 @@
   const FALLBACK_EMAIL = "jamakzai12@gmail.com";
 
   const form = document.getElementById("waitlist");
+  const submitBtn = form.querySelector('button[type="submit"]');
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
@@ -524,7 +529,15 @@
     data._subject = "Early Eyes waitlist signup";
     data._template = "table";
     data._captcha = "false";
-    const done = () => { form.style.display = "none"; document.getElementById("success").style.display = "block"; };
+    const utm = new URLSearchParams(location.search);
+    ["utm_source", "utm_medium", "utm_campaign", "ref"].forEach(k => { const v = utm.get(k); if (v) data[k] = v; });
+    submitBtn.disabled = true;
+    const btnLabel = submitBtn.textContent;
+    submitBtn.textContent = "Sending…";
+    const done = () => {
+      form.style.display = "none"; document.getElementById("success").style.display = "block";
+      if (window.twq) twq('event', 'tw-rd97w-re1fj', {});
+    };
     try {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(data) });
       if (!res.ok) throw new Error("form endpoint rejected");
@@ -533,6 +546,8 @@
       const body = encodeURIComponent(`email: ${data.email}\nbuilding: ${data.building || "-"}\ncategory: ${data.category}\nreciprocity: ${data.reciprocity}`);
       window.location.href = `mailto:${FALLBACK_EMAIL}?subject=early%20eyes%20waitlist&body=${body}`;
       done();
+    } finally {
+      submitBtn.disabled = false; submitBtn.textContent = btnLabel;
     }
   });
 </script>
