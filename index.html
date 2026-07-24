@@ -533,18 +533,24 @@ twq('config','rd97w');
     submitBtn.disabled = true;
     const btnLabel = submitBtn.textContent;
     submitBtn.textContent = "Sending…";
-    const done = () => {
+    const showSuccess = () => {
       form.style.display = "none"; document.getElementById("success").style.display = "block";
-      if (window.twq) twq('event', 'tw-rd97w-re1fj', {});
     };
     try {
       const res = await fetch(FORM_ENDPOINT, { method: "POST", headers: { "Accept": "application/json", "Content-Type": "application/json" }, body: JSON.stringify(data) });
-      if (!res.ok) throw new Error("form endpoint rejected");
-      done();
+      // FormSubmit rejects with HTTP 200 + success:"false" (rate limits, spam
+      // flags, reactivation) — the body verdict is the only real one.
+      const verdict = await res.json().catch(() => null);
+      const delivered = res.ok && verdict && String(verdict.success) === "true";
+      if (!delivered) throw new Error("form endpoint rejected: " + (verdict && verdict.message ? verdict.message : res.status));
+      // Conversion fires ONLY on a confirmed delivery — X's number must mean
+      // "email landed in the inbox", not "someone pressed the button".
+      if (window.twq) twq('event', 'tw-rd97w-re1fj', {});
+      showSuccess();
     } catch {
       const body = encodeURIComponent(`email: ${data.email}\nbuilding: ${data.building || "-"}\ncategory: ${data.category}\nreciprocity: ${data.reciprocity}`);
       window.location.href = `mailto:${FALLBACK_EMAIL}?subject=early%20eyes%20waitlist&body=${body}`;
-      done();
+      showSuccess();
     } finally {
       submitBtn.disabled = false; submitBtn.textContent = btnLabel;
     }
